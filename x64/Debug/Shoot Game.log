@@ -1,0 +1,44 @@
+﻿  main.cpp
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\setmaze.h(11,1): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\setmaze.h(12,1): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\camera.h(138,32): warning C4244: “+=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\camera.h(139,34): warning C4244: “+=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\camera.h(212,1): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\camera.h(213,1): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\player.h(79,1): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\player.h(126,1): warning C4305: “参数”: 从“double”到“float”截断
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\player.h(141,1): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\player.h(142,1): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\boss.h(38,28): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\ballmanager.h(201,17): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\ballmanager.h(203,12): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\ballmanager.h(205,12): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\ballmanager.h(232,15): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\world.h(101,1): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\world.h(102,1): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\world.h(184,44): warning C4244: “参数”: 从“T”转换到“GLsizei”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\world.h(184,30): warning C4244: “参数”: 从“T”转换到“GLsizei”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\main.cpp(22,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\src\main.cpp(58,26): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+  Shoot Game.vcxproj -> C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\x64\Debug\Shoot Game.exe
