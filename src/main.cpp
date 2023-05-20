@@ -2,9 +2,14 @@
 #include <GLFW/glfw3.h>                     // 包含GLFW库的函数声明
 #include "world.h"                          // 包含自定义的world.h头文件
 #include "setmaze.h"                        //生成maze.obj
+#include <irrKlang/irrKlang.h>			//irrKlang：一个跨平台的音频库
+
+#pragma comment(lib, "library/lib/irrKlang.lib")	//irrKlang：一个跨平台的音频库
 
 void OpenWindow();                          // 声明OpenWindow函数
 void PrepareOpenGL();                       // 声明PrepareOpenGL函数
+
+irrklang::ISoundEngine* Music = irrklang::createIrrKlangDevice();
 
 GLFWwindow* window;                         // 定义一个GLFW窗口对象指针
 vec2 windowSize;                            // 定义一个vec2类型的窗口大小变量
@@ -34,15 +39,17 @@ int main() {
     PrepareOpenGL();                          // 调用PrepareOpenGL函数准备OpenGL
 
     World world(window, windowSize);          // 创建World对象，传入窗口和窗口大小
-    
+
 
 
     currentFrame = glfwGetTime();             // 获取当前时间
     lastFrame = currentFrame;                  // 初始化上一帧时间
 
-   // world.SetGameModel(gameModel);            // 设置World对象的游戏模式
+    // world.SetGameModel(gameModel);            // 设置World对象的游戏模式
     world.SetGameModel(1);
     float gameTime = 0;                       // 初始化游戏时间为0
+
+    Music->play2D("res/sounds/background.wav", GL_FALSE);	//调用irrKlang库的音频处理功能
 
     while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE)) {
         currentFrame = glfwGetTime();          // 获取当前时间
@@ -70,7 +77,7 @@ int main() {
 }
 
 void OpenWindow() {
-    const char* TITLE = "Shoot Game";                            // 窗口标题
+    const char* TITLE = "Maze Game";                            // 窗口标题
     int WIDTH = 1960;                                            // 窗口宽度
     //WIDTH = 960; 
     int HEIGHT = 1080;                                           // 窗口高度

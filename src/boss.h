@@ -49,7 +49,7 @@ public:
         vec3 direction = normalize(playerPos - bossPos);
 
         // 设置怪物的移动速度
-        float movespeed = 0.1f;
+        float movespeed = 0.5f;
         // 计算怪物和摄像头之间的距离
         float distance = length(playerPos - bossPos);
         model = mat4(1.0);  // 初始化模型矩阵为单位矩阵
@@ -116,9 +116,10 @@ public:
 
 private:
     void LoadModel() {
-        // 加载怪物模型
+        // 加载怪物模型,普通OBJ
         bossModel = new Model("res/model/boss.obj",0.1f);
-        //bossModel = new Model("res/model/PAN.FBX");
+        // 骨骼动画FBX
+        //bossModel = new Model("res/model/bbb.FBX");
 
     }
 
@@ -129,7 +130,9 @@ private:
     }
     void init(){
         //怪物（数组）初始化...
-        this->bossPos = vec3(-10.0f, 0.0f, 0.0f); // 设置怪物的初始位置为原点
+        float randomX = rand() % 501; // 生成0到500之间的随机数
+        float randomZ = rand() % 501; // 生成0到500之间的随机数
+        this->bossPos = vec3(randomX, 0.0f, randomZ); // 设置怪物的初始位置
         this->rotationAngle = glm::radians(0.0f);
         this->model = mat4(1.0f);
         this->HP = 10;

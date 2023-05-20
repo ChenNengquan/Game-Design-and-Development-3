@@ -1,8 +1,47 @@
-﻿main.obj : error LNK2019: 无法解析的外部符号 _glfwInit，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
+﻿  main.cpp
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\camera.h(138,32): warning C4244: “+=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\camera.h(139,34): warning C4244: “+=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\place.h(128,33): warning C4244: “参数”: 从“GLint”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\place.h(129,31): warning C4244: “参数”: 从“GLint”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\player.h(79,1): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\player.h(126,1): warning C4305: “参数”: 从“double”到“float”截断
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\player.h(141,1): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\player.h(142,1): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\boss.h(38,28): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\ballmanager.h(201,17): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\ballmanager.h(203,12): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\ballmanager.h(205,12): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\ballmanager.h(232,15): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\world.h(190,44): warning C4244: “参数”: 从“T”转换到“GLsizei”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\world.h(190,30): warning C4244: “参数”: 从“T”转换到“GLsizei”，可能丢失数据
+          with
+          [
+              T=float
+          ]
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\main.cpp(22,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\src\main.cpp(58,26): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+main.obj : error LNK2019: 无法解析的外部符号 _glfwInit，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
 main.obj : error LNK2019: 无法解析的外部符号 _glfwTerminate，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
 main.obj : error LNK2019: 无法解析的外部符号 _glfwWindowHint，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
 main.obj : error LNK2019: 无法解析的外部符号 _glfwCreateWindow，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
 main.obj : error LNK2019: 无法解析的外部符号 _glfwWindowShouldClose，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwGetWindowSize，函数 "public: __thiscall Camera::Camera(struct GLFWwindow *)" (??0Camera@@QAE@PAUGLFWwindow@@@Z) 中引用了该符号
 main.obj : error LNK2019: 无法解析的外部符号 _glfwPollEvents，函数 _main 中引用了该符号
 main.obj : error LNK2019: 无法解析的外部符号 _glfwSetInputMode，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
 main.obj : error LNK2019: 无法解析的外部符号 _glfwGetKey，函数 "private: void __thiscall Camera::KeyboardInput(float)" (?KeyboardInput@Camera@@AAEXM@Z) 中引用了该符号
@@ -21,4 +60,4 @@ library\lib\assimp-vc143-mtd.lib : warning LNK4272: 库计算机类型“x64”�
 library\lib\glew32.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
 library\lib\glew32s.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
 library\lib\glfw3.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
-C:\Users\16632\Documents\OpenGLGame\Shoot-Game-main\Debug\Shoot Game.exe : fatal error LNK1120: 19 个无法解析的外部命令
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\Debug\Shoot Game.exe : fatal error LNK1120: 20 个无法解析的外部命令

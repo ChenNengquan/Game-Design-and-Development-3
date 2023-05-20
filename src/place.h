@@ -26,6 +26,10 @@ private:
 	mat4 lightSpaceMatrix;              // 光空间矩阵，用于将顶点世界坐标转换为以光源为中心的坐标
 	Shader* sunShader;                  // 太阳着色器
 
+
+	Shader* hudShader;					//界面着色器
+	Texture* hudTexture;				//界面纹理
+
 	Camera* camera;                     // 摄像机
 	
 	// 模型变换矩阵
@@ -116,6 +120,54 @@ public:
 		shader->Unbind();
 		glBindVertexArray(0);
 	}
+
+	void DrawHUD(GLint PlyerHP, GLint remainingTime) {
+		// 使用HUD着色器程序
+		hudShader->Bind();
+		// 设置uniform变量
+		hudShader->SetFloat("health", PlyerHP);
+		hudShader->SetFloat("time", remainingTime);
+		// 绑定HUD纹理
+		//glBindTexture(GL_TEXTURE_2D, hudTexture);
+
+		// 设置顶点数据
+		GLfloat vertices[] = {
+			// 顶点坐标    纹理坐标
+			-1.0f, -1.0f, 0.0f, 0.0f,
+			 1.0f, -1.0f, 1.0f, 0.0f,
+			 1.0f,  1.0f, 1.0f, 1.0f,
+			-1.0f,  1.0f, 0.0f, 1.0f
+		};
+
+		// 创建和绑定顶点缓冲对象（VBO）
+		GLuint VBO;
+		glGenBuffers(1, &VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		// 设置顶点属性指针
+		GLuint positionAttrib = glGetAttribLocation(hudShader->GetProgram(), "position");
+		glEnableVertexAttribArray(positionAttrib);
+		glVertexAttribPointer(positionAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+
+		GLuint texCoordAttrib = glGetAttribLocation(hudShader->GetProgram(), "texCoord");
+		glEnableVertexAttribArray(texCoordAttrib);
+		glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+
+		// 绘制HUD
+		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+		// 解绑和删除顶点缓冲对象（VBO）
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDeleteBuffers(1, &VBO);
+
+		// 解绑HUD纹理
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		// 禁用着色器
+		hudShader->Unbind();
+	}
+	
 	
 private:
 	// 加载模型
@@ -149,8 +201,11 @@ private:
 		sunShader->Bind();
 		sunShader->Unbind();
 
-		floorShader=new Shader("res/shader/floor.vert", "res/shader/floor.frag");
+		floorShader = new Shader("res/shader/floor.vert", "res/shader/floor.frag");
 
+		/*hudShader = new Shader("res/shader/HUD.vert", "res/shader/HUD.frag");
+		hudShader->Bind();
+		hudShader->Unbind();*/
 
 	}
 

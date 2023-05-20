@@ -1,0 +1,29 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: 中间目录(Debug\)包含从另一个项目(Shoot Game.vcxproj)共享的文件。   这会导致错误的清除和重新生成行为。
+main.obj : error LNK2019: 无法解析的外部符号 _glfwInit，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwTerminate，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwWindowHint，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwCreateWindow，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwWindowShouldClose，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwGetWindowSize，函数 "public: __thiscall Camera::Camera(struct GLFWwindow *)" (??0Camera@@QAE@PAUGLFWwindow@@@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwPollEvents，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwSetInputMode，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwGetKey，函数 "private: void __thiscall Camera::KeyboardInput(float)" (?KeyboardInput@Camera@@AAEXM@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwGetMouseButton，函数 "public: void __thiscall World::Update(float)" (?Update@World@@QAEXM@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwGetCursorPos，函数 "private: void __thiscall Camera::MouseMovement(void)" (?MouseMovement@Camera@@AAEXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwGetTime，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwMakeContextCurrent，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwSwapBuffers，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwSwapInterval，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwGetProcAddress，函数 "void __cdecl OpenWindow(void)" (?OpenWindow@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall Assimp::Importer::Importer(void)" (??0Importer@Assimp@@QAE@XZ)，函数 "private: void __thiscall Model::LoadModel(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?LoadModel@Model@@AAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall Assimp::Importer::~Importer(void)" (??1Importer@Assimp@@QAE@XZ)，函数 "private: void __thiscall Model::LoadModel(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?LoadModel@Model@@AAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: struct aiScene const * __thiscall Assimp::Importer::ReadFile(char const *,unsigned int)" (?ReadFile@Importer@Assimp@@QAEPBUaiScene@@PBDI@Z)，函数 "public: struct aiScene const * __thiscall Assimp::Importer::ReadFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,unsigned int)" (?ReadFile@Importer@Assimp@@QAEPBUaiScene@@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@I@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: char const * __thiscall Assimp::Importer::GetErrorString(void)const " (?GetErrorString@Importer@Assimp@@QBEPBDXZ)，函数 "private: void __thiscall Model::LoadModel(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?LoadModel@Model@@AAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "__declspec(dllimport) class irrklang::ISoundEngine * __cdecl irrklang::createIrrKlangDevice(enum irrklang::E_SOUND_OUTPUT_DRIVER,int,char const *,char const *)" (__imp_?createIrrKlangDevice@irrklang@@YAPAVISoundEngine@1@W4E_SOUND_OUTPUT_DRIVER@1@HPBD1@Z)，函数 "void __cdecl `dynamic initializer for 'Music''(void)" (??__EMusic@@YAXXZ) 中引用了该符号
+irrKlang.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+library\lib\assimp-vc143-mtd.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+library\lib\glew32.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+library\lib\glew32s.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+library\lib\glfw3.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+library\lib\irrKlang.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\Debug\Maze Game.exe : fatal error LNK1120: 21 个无法解析的外部命令
