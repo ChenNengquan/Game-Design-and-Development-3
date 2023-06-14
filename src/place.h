@@ -11,6 +11,17 @@
 class Place {
 private:
 	vec2 windowSize;
+	Model* sky;                        // 天空模型
+	Texture* skyTexture;               // 天空纹理
+	Shader* skyShader;                 // 天空着色器
+
+	Model* initial;							//开始、胜利、失败界面模型
+	Texture* initialTexture;               // 初始界面纹理
+	Texture* DefeatTexture;					//胜利界面纹理
+	Texture* VictoryTexture;					//失败界面纹理
+	Shader* initialShader;                 // 界面着色器
+
+
 	// 房间
 	Model* room;                        // 房间模型
 	Texture* roomTexture;               // 房间纹理
@@ -26,9 +37,6 @@ private:
 	mat4 lightSpaceMatrix;              // 光空间矩阵，用于将顶点世界坐标转换为以光源为中心的坐标
 	Shader* sunShader;                  // 太阳着色器
 
-
-	Shader* hudShader;					//界面着色器
-	Texture* hudTexture;				//界面纹理
 
 	Camera* camera;                     // 摄像机
 	
@@ -94,8 +102,9 @@ public:
 	// 渲染太阳
 	void SunRender() {
 		Shader* shader = sunShader;
+		mat4 projection0 = perspective(radians(camera->GetZoom()), windowSize.x / windowSize.y, 0.1f, 500.0f);
 		shader->Bind();
-		shader->SetMat4("projection", projection);
+		shader->SetMat4("projection", projection0);
 		shader->SetMat4("model", model);
 		shader->SetMat4("view", view);
 		glBindVertexArray(sun->GetVAO());
@@ -121,54 +130,58 @@ public:
 		glBindVertexArray(0);
 	}
 
-	void DrawHUD(GLint PlyerHP, GLint remainingTime) {
-		// 使用HUD着色器程序
-		hudShader->Bind();
-		// 设置uniform变量
-		hudShader->SetFloat("health", PlyerHP);
-		hudShader->SetFloat("time", remainingTime);
-		// 绑定HUD纹理
-		//glBindTexture(GL_TEXTURE_2D, hudTexture);
+	//渲染天空
+	void skyRender() {
+		Shader* shader = skyShader;
+		shader->Bind();
+		// 更新投影矩阵为相机的透视投影矩阵
+		shader->SetMat4("projection", camera->GetProjectionMatrix());
+		shader->SetMat4("view", view);
+		mat4 model = mat4(1.0);
+		shader->SetMat4("model", model);
 
-		// 设置顶点数据
-		GLfloat vertices[] = {
-			// 顶点坐标    纹理坐标
-			-1.0f, -1.0f, 0.0f, 0.0f,
-			 1.0f, -1.0f, 1.0f, 0.0f,
-			 1.0f,  1.0f, 1.0f, 1.0f,
-			-1.0f,  1.0f, 0.0f, 1.0f
-		};
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, skyTexture->GetId());
 
-		// 创建和绑定顶点缓冲对象（VBO）
-		GLuint VBO;
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		// 设置顶点属性指针
-		GLuint positionAttrib = glGetAttribLocation(hudShader->GetProgram(), "position");
-		glEnableVertexAttribArray(positionAttrib);
-		glVertexAttribPointer(positionAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
-
-		GLuint texCoordAttrib = glGetAttribLocation(hudShader->GetProgram(), "texCoord");
-		glEnableVertexAttribArray(texCoordAttrib);
-		glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
-
-		// 绘制HUD
-		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-
-		// 解绑和删除顶点缓冲对象（VBO）
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glDeleteBuffers(1, &VBO);
-
-		// 解绑HUD纹理
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		// 禁用着色器
-		hudShader->Unbind();
+		glBindVertexArray(sky->GetVAO());
+		glDrawElements(GL_TRIANGLES, static_cast<GLuint>(sky->GetIndices().size()), GL_UNSIGNED_INT, 0);
+		skyShader->Unbind();
+		glBindVertexArray(0);
 	}
 	
-	
+	//渲染开始/失败/胜利界面，根据value的不同值
+	void initialRender(int value) {
+		Shader* shader = initialShader;
+		vec3 Pos = (camera->GetFront() * 0.25f) + (camera->GetRight() * 0.2f) + (camera->GetUp() * -0.125f) + camera->GetPosition();  // 计算枪的位置
+		//vec3 Pos = (camera->GetFront() * 0.25f) + (camera->GetRight() * 0.0f) + (camera->GetUp() * 0.025f) + camera->GetPosition();
+		mat4 model = mat4(1.0);  // 初始化点模型的变换矩阵为单位矩阵
+		model[0] = vec4(camera->GetRight(), 0.0);  // 将血条模型的 x 轴设置为相机的右方向
+		model[1] = vec4(camera->GetUp(), 0.0);  // 将血条模型的 y 轴设置为相机的上方向
+		model[2] = vec4(-camera->GetFront(), 0.0);  // 将血条模型的 z 轴设置为相机的反方向
+		model[3] = vec4(Pos, 1.0);  // 将血条模型的位置设置为计算得到的模型的位置
+		//model[3] = vec4(camera->GetPosition(), 1.0);  // 将点模型的位置设置为相机的位置
+		//model = translate(model, camera->GetFront());  // 根据相机的前方向进行平移变换
+		model = translate(model, vec3(-0.2, 0.15, -1.0));  // 进行平移变换
+		shader->Bind();
+		// 更新投影矩阵为相机的透视投影矩阵
+		shader->SetMat4("projection", camera->GetProjectionMatrix());
+		shader->SetMat4("view", view);
+		shader->SetMat4("model", model);
+
+		glActiveTexture(GL_TEXTURE0);
+
+		if(value==1)
+			glBindTexture(GL_TEXTURE_2D, initialTexture->GetId());
+		else if(value==2)
+			glBindTexture(GL_TEXTURE_2D, VictoryTexture->GetId());
+		else if(value==3)
+			glBindTexture(GL_TEXTURE_2D, DefeatTexture->GetId());
+
+		glBindVertexArray(initial->GetVAO());
+		glDrawElements(GL_TRIANGLES, static_cast<GLuint>(initial->GetIndices().size()), GL_UNSIGNED_INT, 0);
+		initialShader->Unbind();
+		glBindVertexArray(0);
+	}
 private:
 	// 加载模型
 	void LoadModel() {
@@ -178,12 +191,29 @@ private:
 		sun = new Model("res/model/sun.obj");
 		//加载地板
 		floor= new Model("res/model/floor.obj");
+		//加载天空盒模型
+		sky= new Model("res/model/skybox.obj",1000);
+
+		initial = new Model("res/model/initial.obj",0.001);
+
+
 	}
 	// 加载纹理
 	void LoadTexture() {
 		//加载房间纹理
 		roomTexture = new Texture("res/texture/wall.jpg");
+		//地板纹理
 		floorTexture = new Texture("res/texture/grass.jpg");
+
+		//天空纹理
+		skyTexture=new Texture("res/texture/sky.jpg");
+
+		//初始界面纹理
+		initialTexture=new Texture("res/texture/initial.jpg");
+		//...
+		VictoryTexture=new Texture("res/texture/VictoryTexture.jpg");
+		//...
+		DefeatTexture= new Texture("res/texture/DefeatTexture.jpg");
 		
 	}
 	// 加载着色器
@@ -198,14 +228,14 @@ private:
 		roomShader->Unbind();
 
 		sunShader = new Shader("res/shader/sun.vert", "res/shader/sun.frag");
-		sunShader->Bind();
-		sunShader->Unbind();
 
 		floorShader = new Shader("res/shader/floor.vert", "res/shader/floor.frag");
 
-		/*hudShader = new Shader("res/shader/HUD.vert", "res/shader/HUD.frag");
-		hudShader->Bind();
-		hudShader->Unbind();*/
+		//天空着色器
+		skyShader= new Shader("res/shader/room.vert", "res/shader/room.frag");
+
+		initialShader=new Shader("res/shader/room.vert", "res/shader/room.frag");
+
 
 	}
 

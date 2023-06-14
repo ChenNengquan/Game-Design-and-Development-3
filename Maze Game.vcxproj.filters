@@ -1154,9 +1154,6 @@
     <ClInclude Include="src\world.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\ballmanager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="library\include\AL\al.h">
       <Filter>头文件</Filter>
     </ClInclude>

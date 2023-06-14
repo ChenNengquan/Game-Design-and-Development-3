@@ -10,6 +10,17 @@
 class Player {
 private:
 	vec2 windowSize;					// 窗口尺寸
+
+	Model* HPobj;                     // 血量显示
+	Texture* HPTexture;               // 血量纹理
+	Shader* HPShader;                 // 血量着色器
+
+	Model* HPhint;                     // 血量文字显示
+	Texture* HPhintTexture;               // 血量纹理
+
+	Texture* RemainingTimehintTexture;     //时间文字纹理
+	Texture* RemainingTimeTexture;		  //时间纹理
+
 	// 枪的相关数据
 	Model* gun;
 	vec3 gunPos;						// 枪的位置坐标
@@ -107,8 +118,94 @@ public:
 
 		glBindVertexArray(0);  // 解绑顶点数组对象
 		gunShader->Unbind();  // 解绑枪的着色器
-
 	}
+
+	void HPRendar() {
+		Shader* shader = HPShader;
+		float scaleFactor = static_cast<float>(HP) / 100.0f; // 根据血量计算缩放因子
+		// 计算血条显示的位置
+
+		vec3 Pos = (camera->GetFront() * 0.25f) + (camera->GetRight() * 0.2f) + (camera->GetUp() * -0.125f) + camera->GetPosition();
+		mat4 model = mat4(1.0);  // 初始化模型的变换矩阵为单位矩阵
+		mat4 HPModel;
+		model[0] = vec4(camera->GetRight(), 0.0);  // 将血条模型的 x 轴设置为相机的右方向
+		model[1] = vec4(camera->GetUp(), 0.0);  // 将血条模型的 y 轴设置为相机的上方向
+		model[2] = vec4(-camera->GetFront(), 0.0);  // 将血条模型的 z 轴设置为相机的反方向
+		model[3] = vec4(Pos, 1.0);  // 将血条模型的位置设置为计算得到的模型的位置
+		// 缩放HPModel的宽度
+		HPModel = scale(model, vec3(scaleFactor, 1.0f, 1.0f));
+		HPModel = translate(HPModel, vec3(0.05, 0.30, -0.225));  // 进行平移变换
+
+		shader->Bind();
+		// 更新投影矩阵为相机的透视投影矩阵
+		shader->SetMat4("projection", camera->GetProjectionMatrix());
+		shader->SetMat4("view", view);
+		shader->SetMat4("model", HPModel);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, HPTexture->GetId());
+
+		glBindVertexArray(HPobj->GetVAO());
+		glDrawElements(GL_TRIANGLES, static_cast<GLuint>(HPobj->GetIndices().size()), GL_UNSIGNED_INT, 0);
+		HPShader->Unbind();
+		glBindVertexArray(0);
+
+		//血量文字提示
+		shader->Bind();
+		model = translate(model, vec3(0.105, 0.30, -0.225));  // 进行平移变换
+		shader->SetMat4("model", model);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, HPhintTexture->GetId());
+
+		glBindVertexArray(HPhint->GetVAO());
+		glDrawElements(GL_TRIANGLES, static_cast<GLuint>(HPhint->GetIndices().size()), GL_UNSIGNED_INT, 0);
+		HPShader->Unbind();
+		glBindVertexArray(0);
+	}
+
+	void RemainingTimeRendar(int RemainingTime) {
+		Shader* shader = HPShader;
+		float scaleFactor = static_cast<float>(RemainingTime) / 360.0f; // 根据时间计算缩放因子
+		// 计算时间显示的位置
+
+		vec3 Pos = (camera->GetFront() * 0.25f) + (camera->GetRight() * 0.2f) + (camera->GetUp() * -0.125f) + camera->GetPosition();
+		mat4 model = mat4(1.0);  // 初始化模型的变换矩阵为单位矩阵
+		mat4 RemainingTimeModel;
+		model[0] = vec4(camera->GetRight(), 0.0);  // 将时间模型的 x 轴设置为相机的右方向
+		model[1] = vec4(camera->GetUp(), 0.0);  // 将时间模型的 y 轴设置为相机的上方向
+		model[2] = vec4(-camera->GetFront(), 0.0);  // 将时间模型的 z 轴设置为相机的反方向
+		model[3] = vec4(Pos, 1.0);  // 将时间模型的位置设置为计算得到的模型的位置
+		// 缩放HPModel的宽度
+		RemainingTimeModel = scale(model, vec3(scaleFactor, 1.0f, 1.0f));
+		RemainingTimeModel = translate(RemainingTimeModel, vec3(0.05, 0.28, -0.225));  // 进行平移变换
+
+		shader->Bind();
+		// 更新投影矩阵为相机的透视投影矩阵
+		shader->SetMat4("projection", camera->GetProjectionMatrix());
+		shader->SetMat4("view", view);
+		shader->SetMat4("model", RemainingTimeModel);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, RemainingTimeTexture->GetId());
+
+		glBindVertexArray(HPobj->GetVAO());
+		glDrawElements(GL_TRIANGLES, static_cast<GLuint>(HPobj->GetIndices().size()), GL_UNSIGNED_INT, 0);
+		HPShader->Unbind();
+		glBindVertexArray(0);
+
+		//血量文字提示
+		shader->Bind();
+		model = translate(model, vec3(0.105, 0.28, -0.225));  // 进行平移变换
+		shader->SetMat4("model", model);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, RemainingTimehintTexture->GetId());
+
+		glBindVertexArray(HPhint->GetVAO());
+		glDrawElements(GL_TRIANGLES, static_cast<GLuint>(HPhint->GetIndices().size()), GL_UNSIGNED_INT, 0);
+		HPShader->Unbind();
+		glBindVertexArray(0);
+	}
+
 	vec3 GetPosition() {
 		return camera->GetPosition();
 	}
@@ -124,11 +221,25 @@ private:
 	void LoadGun() {
 		gun = new Model("res/model/gun.obj");
 		dot = new Model("res/model/dot.obj",0.01);
+		//血条模型
+		HPobj = new Model("res/model/HP.obj", 0.01);
+		HPhint = new Model("res/model/HP0.obj", 0.01);
 	}
 	// 加载纹理
 	void LoadTexture() {
 		diffuseMap = new Texture("res/texture/gun-diffuse-map.jpg");
 		specularMap = new Texture("res/texture/gun-specular-map.jpg");
+
+		//血条纹理
+		HPTexture = new Texture("res/texture/HP.jpg");
+		//血量文字
+		HPhintTexture = new Texture("res/texture/HP0.jpg");
+
+		//时间纹理
+		RemainingTimeTexture = new Texture("res/texture/RemainingTime.jpg");
+		//时间文字
+		RemainingTimehintTexture = new Texture("res/texture/RemainingTimehint.jpg");
+
 	}
 	// 加载着色器
 	void LoadShader() {
@@ -148,6 +259,9 @@ private:
 		dotShader->Bind();
 		dotShader->SetVec3("color", vec3(1.0, 0.0, 0.0));
 		dotShader->Unbind();
+
+		HPShader = new Shader("res/shader/room.vert", "res/shader/room.frag");
+
 	}
 };
 

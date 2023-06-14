@@ -19,11 +19,10 @@ main.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall Assimp
 main.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall Assimp::Importer::~Importer(void)" (??1Importer@Assimp@@QAE@XZ)，函数 "private: void __thiscall Model::LoadModel(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?LoadModel@Model@@AAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) 中引用了该符号
 main.obj : error LNK2019: 无法解析的外部符号 "public: struct aiScene const * __thiscall Assimp::Importer::ReadFile(char const *,unsigned int)" (?ReadFile@Importer@Assimp@@QAEPBUaiScene@@PBDI@Z)，函数 "public: struct aiScene const * __thiscall Assimp::Importer::ReadFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,unsigned int)" (?ReadFile@Importer@Assimp@@QAEPBUaiScene@@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@I@Z) 中引用了该符号
 main.obj : error LNK2019: 无法解析的外部符号 "public: char const * __thiscall Assimp::Importer::GetErrorString(void)const " (?GetErrorString@Importer@Assimp@@QBEPBDXZ)，函数 "private: void __thiscall Model::LoadModel(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?LoadModel@Model@@AAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) 中引用了该符号
-main.obj : error LNK2019: 无法解析的外部符号 "__declspec(dllimport) class irrklang::ISoundEngine * __cdecl irrklang::createIrrKlangDevice(enum irrklang::E_SOUND_OUTPUT_DRIVER,int,char const *,char const *)" (__imp_?createIrrKlangDevice@irrklang@@YAPAVISoundEngine@1@W4E_SOUND_OUTPUT_DRIVER@1@HPBD1@Z)，函数 "void __cdecl `dynamic initializer for 'Music''(void)" (??__EMusic@@YAXXZ) 中引用了该符号
 irrKlang.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
 library\lib\assimp-vc143-mtd.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
 library\lib\glew32.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
 library\lib\glew32s.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
 library\lib\glfw3.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
 library\lib\irrKlang.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
-C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\Debug\Maze Game.exe : fatal error LNK1120: 21 个无法解析的外部命令
+C:\Users\16632\Documents\OpenGLGame\Shoot-Maze-Game\Debug\Maze Game.exe : fatal error LNK1120: 20 个无法解析的外部命令

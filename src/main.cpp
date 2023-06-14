@@ -46,7 +46,7 @@ int main() {
     lastFrame = currentFrame;                  // 初始化上一帧时间
 
     // world.SetGameModel(gameModel);            // 设置World对象的游戏模式
-    world.SetGameModel(1);
+    //world.SetGameModel(1);
     float gameTime = 0;                       // 初始化游戏时间为0
 
     Music->play2D("res/sounds/background.wav", GL_FALSE);	//调用irrKlang库的音频处理功能
@@ -72,7 +72,6 @@ int main() {
     }
     glfwTerminate();                                             // 终止GLFW
 
-    cout << "----------------------------您的得分为：" << world.GetScore() << " ----------------------------" << endl;
     return 0;
 }
 

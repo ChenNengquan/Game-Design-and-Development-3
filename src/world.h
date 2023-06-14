@@ -6,7 +6,7 @@
 #include "player.h"
 #include "boss.h"
 #include "camera.h"
-#include "ballmanager.h"
+
 #include"setmaze.h"
 #include <irrKlang/irrKlang.h>			//irrKlang：一个跨平台的音频库
 
@@ -22,7 +22,6 @@ private:
 	Player* player;				// 玩家
 	Boss* boss[bossnum];				//怪物数组
 	Camera* camera;				// 摄像机
-	BallManager* ball;			// 小球
 
 	// 阴影
 	GLuint depthMap;			// 深度贴图
@@ -51,7 +50,6 @@ public:
 		camera = new Camera(window); // 创建摄像机对象
 		place = new Place(windowSize, camera); // 创建场景对象
 		player = new Player(windowSize, camera); // 创建玩家对象
-		ball = new BallManager(windowSize, camera); // 创建小球管理器对象
 
 		for (int i = 0; i < bossnum; i++)
 			boss[i] = new Boss(camera, player);			//创建怪物对象
@@ -73,8 +71,6 @@ public:
 	// 更新数据
 	void Update(float deltaTime) {
 
-		
-
 		camera->Update(deltaTime); // 更新摄像机
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 			SoundEngine->play2D("res/sounds/shoot0.wav", GL_FALSE);	//调用irrKlang库的音频处理功能
@@ -87,13 +83,14 @@ public:
 		}
 		else {
 			for (int i = 0; i < nowbossnum; i++) {
-				if (isStart)
-					boss[i]->Update(camera->GetPosition(), camera->GetFront(), false); // 更新怪物的位置和状态（鼠标左键未按下）
+				if (boss[i]->GetHp() > 0)//若Boss生命值小于0,销毁对象(取消更新、渲染)
+					if (isStart)
+						boss[i]->Update(camera->GetPosition(), camera->GetFront(), false); // 更新怪物的位置和状态（鼠标左键未按下）
 				player->Update(deltaTime, false);
 			}
 		}
 		//随机更新怪物数量
-		if (isStart&& rand()%1000 == 0 && nowbossnum < bossnum) {
+		if (isStart&& rand()%500 == 0 && nowbossnum < bossnum) {
 			nowbossnum++;
 		}
 
@@ -133,22 +130,40 @@ public:
 	}
 	// 渲染模型
 		void Render() {
+			//如果游戏未开始  绘制游戏初始界面并且返回
+			if (!camera->GetGameStart()) {
+				//值为1绘制初始界面
+				place->initialRender(1);
+				return;
+			}
+			//值为2绘制胜利结束界面
+			//值为3绘制失败结束界面界面
+			if (camera->GetGameOver()) {
+				if(isWin)
+					place->initialRender(2);
+				else
+					place->initialRender(3);
+				return;
+			}
+
 		RenderDepth(); // 渲染深度贴图
 		player->Render(); // 渲染玩家
+		player->HPRendar();//渲染血量
+		player->RemainingTimeRendar(remainingTime);//渲染剩余时间
 		place->RoomRender(NULL, depthMap); // 渲染场景中的迷宫（不使用深度贴图）
 		place->SunRender(); // 渲染场景中的太阳
-		//ball->Render(NULL, depthMap); // 渲染小球（不使用深度贴图）
 		place->FloorRender();		     //渲染地板
 		for (int i = 0; i < nowbossnum; i++)
 			if (boss[i]->GetHp() > 0)//若Boss生命值小于0,销毁对象(取消更新、渲染)
 				boss[i]->Render();					//渲染boss
-		//place->DrawHUD(player->GetHp(), remainingTime);
+		//渲染天空
+		//place->skyRender();
+
+		//place->initialRender();
 
 	}
 
-	GLuint GetScore() {
-		return ball->GetScore();// 获取得分
-	}
+
 	// 判断游戏是否结束
 	bool IsOver() {
 		//return ball->IsOver();// 判断小球是否超出范围，游戏是否结束
@@ -156,20 +171,24 @@ public:
 		// 
 		//判断游戏时间
 		if (remainingTime <= 0) {
+
+			//游戏结束
+			camera->SetGameOver();
 			std::cout << "游戏时间到！！" << std::endl;
-			return true;
+			//return true;
 		}
 
 		//人物生命值判断
 		GLint HP = player->GetHp();
 		if(HP<=0) {
+			camera->SetGameOver();
 			std::cout << "你已死亡！！" << std::endl;
-			return true;
+			//return true;
 		}
 
 		if (isWin) {
 			std::cout << "恭喜，您已通关！！" << std::endl;
-			return true;
+			//return true;
 		}
 			
 
@@ -177,9 +196,7 @@ public:
 
 	}
 	// 设置游戏模式
-	void SetGameModel(GLuint num) {// 设置小球的游戏模式
-		ball->SetGameModel(num);
-	}
+
 
 
 
@@ -200,7 +217,6 @@ private:
 		glViewport(0, 0, 1024, 1024); // 设置视口大小为深度贴图的大小
 		glClear(GL_DEPTH_BUFFER_BIT); // 清除深度缓冲区
 		place->RoomRender(simpleDepthShader); // 渲染场景中的房间（使用深度贴图）
-		ball->Render(simpleDepthShader); // 渲染小球（使用深度贴图）
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // 解绑帧缓冲对象
 
 		glViewport(0, 0, windowSize.x, windowSize.y); // 恢复视口大小为窗口大小

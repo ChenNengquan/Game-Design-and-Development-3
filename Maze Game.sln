@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maze Game", "Maze Game.vcxproj", "{40E1C1CD-73F1-4359-8DE2-CB53D49F776A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleApplication1", "..\ConsoleApplication1\ConsoleApplication1.vcxproj", "{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -27,6 +29,18 @@ Global
 		{40E1C1CD-73F1-4359-8DE2-CB53D49F776A}.Release|x64.Build.0 = Release|x64
 		{40E1C1CD-73F1-4359-8DE2-CB53D49F776A}.Release|x86.ActiveCfg = Release|Win32
 		{40E1C1CD-73F1-4359-8DE2-CB53D49F776A}.Release|x86.Build.0 = Release|Win32
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Debug|Win32.Build.0 = Debug|Win32
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Debug|x64.ActiveCfg = Debug|x64
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Debug|x64.Build.0 = Debug|x64
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Debug|x86.ActiveCfg = Debug|Win32
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Debug|x86.Build.0 = Debug|Win32
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Release|Win32.ActiveCfg = Release|Win32
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Release|Win32.Build.0 = Release|Win32
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Release|x64.ActiveCfg = Release|x64
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Release|x64.Build.0 = Release|x64
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Release|x86.ActiveCfg = Release|Win32
+		{0E5FDEC6-416E-439F-A93E-3E41B50CFE2E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

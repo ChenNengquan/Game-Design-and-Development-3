@@ -16,8 +16,8 @@ const float HEIGHT = 10.0f;			// 摄像头高度
 const float SENSITIVITY = 0.05f;     // 视角移动速度
 const float ZOOM = 45.0f;			// 视角范围
 const float JUMPTIME = 0.1f;		// 跳跃持续时间
-//const float GRAVITY = 9.8f;			// 重力加速度
-const float GRAVITY = 0.8f;			// 重力加速度
+const float GRAVITY = 9.8f;			// 重力加速度
+//const float GRAVITY = 0.8f;			// 重力加速度(测试)
 const float JUMPSTRENGTH = 60.0f;	// 跳跃加速度
 
 
@@ -54,6 +54,9 @@ private:
 	double mouseX;
 	double mouseY;
 	bool firstMouse;			// 鼠标是否第一次进入窗口
+
+	bool GameStart;				//初始化界面（是否第一次进入游戏）
+	bool GameOver;				//游戏是否结束？
 public:
 	Camera(GLFWwindow* window) {
 		this->window = window;
@@ -69,11 +72,13 @@ public:
 		isJump = false;                          // 是否正在跳跃
 		gravity = -GRAVITY;                      // 重力加速度
 
-		position = vec3(0.0f, HEIGHT, 500.0f);		// 摄像头的初始位置
+		position = vec3(200.0f, HEIGHT, 500.0f);		// 摄像头的初始位置
 		worldUp = vec3(0.0f, 1.0f, 0.0f);         // 世界的上方向量
 		yaw = YAW;                               // 初始偏航角
 		pitch = PITCH;                           // 初始俯仰角
 
+		GameStart = false;
+		GameOver = false;
 		// 计算和设置投影矩阵
 		projectionMatrix = perspective(radians(zoom), static_cast<float>(this->screenWidth) / this->screenHeight, 0.1f, 1000.0f);
 		UpdateCamera();                          // 更新摄像头参数
@@ -84,10 +89,7 @@ public:
 		MouseMovement();
 		//键盘敲击响应
 		KeyboardInput(deltaTime);
-		// 在绘制循环的末尾调用绘制HUD的函数
-		//DrawHUD();
-		// 显示当前位置的坐标点
-		//std::cout << "Current Position: (" << position.x << ", " << position.y << ", " << position.z << ")" << std::endl;
+
 
 	}
 
@@ -122,86 +124,110 @@ public:
 		return projectionMatrix;
 	}
 
+	void SetGameOver() {
+		this->GameOver = true;
+	}
+	void SetGameStart() {
+		this->GameStart = true;
+	}
+	bool GetGameStart() {
+		return this->GameStart;
+	}
+
+	bool GetGameOver() {
+		return this->GameOver;
+	}
 private:
 	// 鼠标输入
 	void MouseMovement() {
 		double newMouseX, newMouseY;
 
-		glfwGetCursorPos(window, &newMouseX, &newMouseY);
+		if (GameStart && !GameOver) {
+			glfwGetCursorPos(window, &newMouseX, &newMouseY);
 
-		if (firstMouse) {
+			if (firstMouse) {
+				mouseX = newMouseX;
+				mouseY = newMouseY;
+				firstMouse = false;
+			}
+
+			yaw += ((newMouseX - mouseX) * mouseSensitivity);
+			pitch += ((mouseY - newMouseY) * mouseSensitivity);
+
 			mouseX = newMouseX;
 			mouseY = newMouseY;
-			firstMouse = false;
+
+			// 保证俯仰角在-90°和90°之间
+			if (pitch > 89.0f)
+				pitch = 89.0f;
+			if (pitch < -89.0f)
+				pitch = -89.0f;
+
+			// 更新Front，Right，Up
+			UpdateCamera();
 		}
-
-		yaw += ((newMouseX - mouseX) * mouseSensitivity);
-		pitch += ((mouseY - newMouseY) * mouseSensitivity);
-
-		mouseX = newMouseX;
-		mouseY = newMouseY;
-
-		// 保证俯仰角在-90°和90°之间
-		if (pitch > 89.0f)
-			pitch = 89.0f;
-		if (pitch < -89.0f)
-			pitch = -89.0f;
-
-		// 更新Front，Right，Up
-		UpdateCamera();
 	}
 	// 键盘输入
 	void KeyboardInput(float deltaTime) {
-		// 计算移动速度
-		float velocity = movementSpeed * deltaTime;
-		// 计算摄像头前方向量
-		vec3 forward = normalize(cross(worldUp, right));
-		//移动后位置
-		vec3 pos=position;
-		//加速----speed*2
-		//坐标逻辑加减
-		bool isadd = false;
-		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			velocity *= 2;
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-			pos += forward * velocity;
-			isadd = true;
-		}
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-			pos -= forward * velocity;
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-			pos -= right * velocity;
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-			pos += right * velocity;
-			isadd = true;
+
+		if (!GameStart) {
+			if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
+				SetGameStart();
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && !isJump) {
-			jumpTimer = JUMPTIME;
-			//jumpTimer = 0.2f;
-			isJump = true;
-		}
-		if (jumpTimer > 0) {
-			gravity += (JUMPSTRENGTH * (jumpTimer / JUMPTIME)) * deltaTime;
-			jumpTimer -= deltaTime;
-		}
-		gravity -= GRAVITY * deltaTime;
-		pos.y += gravity * deltaTime * 10;
+		if (GameStart&&!GameOver) {
+			// 计算移动速度
+			float velocity = movementSpeed * deltaTime;
+			// 计算摄像头前方向量
+			vec3 forward = normalize(cross(worldUp, right));
+			//移动后位置
+			vec3 pos = position;
+			//加速----speed*2
+			//坐标逻辑加减
+			bool isadd = false;
+			if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+				velocity *= 2;
+			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+				pos += forward * velocity;
+				isadd = true;
+			}
+			if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+				pos -= forward * velocity;
+			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+				pos -= right * velocity;
+			if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+				pos += right * velocity;
+				isadd = true;
+			}
 
-		if (pos.y < HEIGHT) {
-			pos.y = HEIGHT;
-			gravity = 0;
-			isJump = false;
+			if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && !isJump) {
+				jumpTimer = JUMPTIME;
+				//jumpTimer = 0.2f;
+				isJump = true;
+			}
+			if (jumpTimer > 0) {
+				gravity += (JUMPSTRENGTH * (jumpTimer / JUMPTIME)) * deltaTime;
+				jumpTimer -= deltaTime;
+			}
+			gravity -= GRAVITY * deltaTime;
+			pos.y += gravity * deltaTime * 10;
+
+			if (pos.y < HEIGHT) {
+				pos.y = HEIGHT;
+				gravity = 0;
+				isJump = false;
+			}
+
+			CheckCollision(pos, velocity, forward);
+
+			//输出当前索引位置
+			GLint Index_col = static_cast<GLint>(pos.x / 20);
+			GLint Index_row = static_cast<GLint>(pos.z / 20);
+			//显示摄像头相关位置，用于调试
+			//std::cout << "Current Position: (" << position.x << ", " << position.y << ", " << position.z << ")" << std::endl;
+			//std::cout << "Current Position:<<(" << position.x << ", " << position.y << ", " << position.z << ")"<< "Index:(" << Index_row << ", " << Index_col << ")" << std::endl;
+
 		}
-
-		CheckCollision(pos, velocity, forward);
-
-		//输出当前索引位置
-		GLint Index_col = static_cast<GLint>(pos.x / 20);
-		GLint Index_row = static_cast<GLint>(pos.z / 20);
-		//显示摄像头相关位置，用于调试
-		//std::cout << "Current Position: (" << position.x << ", " << position.y << ", " << position.z << ")" << std::endl;
-		//std::cout << "Current Position:<<(" << position.x << ", " << position.y << ", " << position.z << ")"<< "Index:(" << Index_row << ", " << Index_col << ")" << std::endl;
 
 	}
 	// 碰撞检查

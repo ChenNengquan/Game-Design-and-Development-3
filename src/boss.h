@@ -36,7 +36,7 @@ public:
             vec3 des = (pos.z - bossPos.z) / (-dir.z) * dir + pos;
             bossPos.y = 10;//位置矫正，修正被射击位置
             float distance = pow(bossPos.x - des.x, 2) + pow(bossPos.y - des.y, 2);
-            if (distance < 20)
+            if (distance < 50)
                 deductHp();//子弹射中boss，扣除生命值
 
             std::cout << "离集击中距离：" << distance << endl;
@@ -49,7 +49,8 @@ public:
         vec3 direction = normalize(playerPos - bossPos);
 
         // 设置怪物的移动速度
-        float movespeed = 0.5f;
+       // float movespeed = 0.5f;
+        float movespeed = 1.5f;
         // 计算怪物和摄像头之间的距离
         float distance = length(playerPos - bossPos);
         model = mat4(1.0);  // 初始化模型矩阵为单位矩阵
@@ -128,6 +129,12 @@ private:
         bossShader = new Shader("res/shader/boss.vert", "res/shader/boss.frag");
 
     }
+
+    void LoadTexture() {
+        //加载怪物纹理
+        bossTexture = new Texture("res/texture/boss.jpg");
+    }
+
     void init(){
         //怪物（数组）初始化...
         float randomX = rand() % 501; // 生成0到500之间的随机数
@@ -137,10 +144,7 @@ private:
         this->model = mat4(1.0f);
         this->HP = 10;
     }
-    void LoadTexture() {
-        //加载怪物纹理
-        bossTexture = new Texture("res/texture/boss.jpg");
-    }
+
 
 };
 

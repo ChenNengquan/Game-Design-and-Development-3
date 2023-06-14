@@ -537,7 +537,6 @@
     <ClInclude Include="library\include\glm\vector_relational.hpp" />
     <ClInclude Include="library\include\irrKlang.h" />
     <ClInclude Include="library\include\stb_image\stb_image.h" />
-    <ClInclude Include="src\ballmanager.h" />
     <ClInclude Include="src\boss.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\model.h" />
